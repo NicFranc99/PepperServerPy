@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 import openai
-from sklearn.metrics.pairwise import cosine_similarity
 import italian_dictionary
 
 app = Flask(__name__)
