@@ -7,13 +7,22 @@ app = Flask(__name__)
 openai.api_key = "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"
 model = "text-davinci-003"
 
+
+#APi with json request
+# @app.route("/openAi/textSimilarity", methods=['GET'])
+# def textSimilarityCheck():
+#      input_json = request.get_json(force=True) 
+#      category = input_json['category']
+#      text = input_json['text']
+#      result = calculate_cosine_similarity(category, text)
+#      return jsonify(result)
+ 
 @app.route("/openAi/textSimilarity", methods=['GET'])
 def textSimilarityCheck():
-     input_json = request.get_json(force=True) 
-     category = input_json['category']
-     text = input_json['text']
-     result = calculate_cosine_similarity(category, text)
-     return jsonify(result)
+    category = request.args.get('category', type = str)
+    text = request.args.get('text', type = str)
+    result = calculate_cosine_similarity(category, text)
+    return jsonify(result)
  
 def calculate_cosine_similarity(category,text):
     response = openai.Completion.create(
@@ -21,21 +30,37 @@ def calculate_cosine_similarity(category,text):
         #prompt=f"semantic similarity cosin coefficient between: \n{category},\n{text}",
         prompt=f"Coefficiente similarita' semantica del coseno tra: \n{category},\n{text}. Rispondi solo con il valore float",
          temperature=0,
-         max_tokens=64,
+         max_tokens=34,
          top_p=1.0,
          frequency_penalty=0.0,
          presence_penalty=0.0
          )
     
     return response
+#Api with path param (me is path param)
+# class Echo(Resource):
+#     def get(self, me):
+#         return { "res": f"Text: {me}" }
 
+#     def post(self, me):
+#         return { "Answer": f"You said: {me}" }
+
+# api.add_resource(Echo, '/echo')
+
+
+#APi with json request
+# @app.route("/openAi/wordExists", methods=['GET'])
+# def wordExistsCheck(text:str):
+#      input_json = request.get_json(force=True) 
+#      text = input_json['text']
+#      result = check_if_word_in_dictionary(text)
+#      return jsonify(result)
 
 @app.route("/openAi/wordExists", methods=['GET'])
 def wordExistsCheck():
-     input_json = request.get_json(force=True) 
-     text = input_json['text']
-     result = check_if_word_in_dictionary(text)
-     return jsonify(result)
+    text = request.args.get('text', type = str)
+    result = check_if_word_in_dictionary(text)
+    return {"Result" : f"{result}"}
 
 def check_if_word_in_dictionary(word):
     try:
