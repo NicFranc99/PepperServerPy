@@ -21,7 +21,7 @@ def calculate_cosine_similarity(category,text):
         model=model,
         prompt=f"return only the numerical value from semantic similarity cosin coefficient between: \n{category},\n{text} in italian language.",
         # prompt=f"Rispondi solo con il risultato float calcolato Formula del coefficiente di correlazione di Pearson tra: \n{category},\n{text}. ",
-         temperature=1,
+         temperature=0,
          max_tokens=34,
          top_p=1.0,
          frequency_penalty=0.0,
