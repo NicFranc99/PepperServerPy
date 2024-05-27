@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-import openai, numpy as np
+import openai
 from PyMultiDictionary import MultiDictionary
 import os
 dictionary = MultiDictionary()
