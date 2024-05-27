@@ -1,14 +1,14 @@
 from flask import Flask, request, jsonify
-import openai
-import italian_dictionary
+import openai, numpy as np
 from PyMultiDictionary import MultiDictionary
+import os
 dictionary = MultiDictionary()
 
 app = Flask(__name__)
 
-openai.api_key = "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"
-model = "text-davinci-003"
- 
+openai.api_key = os.environ['GPT_API_KEY']
+model = os.environ['GPT_MODEL_SIMILARITY']
+
 @app.route("/openAi/textSimilarity", methods=['GET'])
 def textSimilarityCheck():
     category = request.args.get('category', type = str)
@@ -19,9 +19,9 @@ def textSimilarityCheck():
 def calculate_cosine_similarity(category,text):
     response = openai.Completion.create(
         model=model,
-        #prompt=f"semantic similarity cosin coefficient between: \n{category},\n{text}",
-        prompt=f"Coefficiente similarita' semantica del coseno tra: \n{category},\n{text}. Rispondi solo con il valore float",
-         temperature=0,
+        prompt=f"return only the numerical value from semantic similarity cosin coefficient between: \n{category},\n{text} in italian language.",
+        # prompt=f"Rispondi solo con il risultato float calcolato Formula del coefficiente di correlazione di Pearson tra: \n{category},\n{text}. ",
+         temperature=1,
          max_tokens=34,
          top_p=1.0,
          frequency_penalty=0.0,
